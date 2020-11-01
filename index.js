@@ -3,7 +3,7 @@
 const Adapter = require.main.require('hubot/src/adapter')
 const Response = require.main.require('hubot/src/response')
 const { TextMessage, EnterMessage, LeaveMessage } = require.main.require('hubot/src/message')
-const { driver, api, methodCache, settings } = require('@rocket.chat/sdk')
+const { driver, settings } = require('./run-bot.js')
 
 /** Extend default response with custom adapter methods */
 class RocketChatResponse extends Response {
@@ -36,8 +36,6 @@ class RocketChatBotAdapter extends Adapter {
 
     // Make SDK modules available to scripts, via `adapter.`
     this.driver = driver
-    this.methodCache = methodCache
-    this.api = api
     this.settings = settings
 
     // Print logs with current configs
@@ -56,6 +54,7 @@ class RocketChatBotAdapter extends Adapter {
     // Joins single or array of rooms by name from room setting (comma separated)
     // Reactive message subscription uses callback to process every stream update
     driver.useLog(this.robot.logger)
+    this.robot.logger.error(`Thusfar`)
     driver.connect()
       .catch((err) => {
         this.robot.logger.error(this.robot.logger.error(`Unable to connect: ${JSON.stringify(err)}`))
@@ -135,6 +134,12 @@ class RocketChatBotAdapter extends Adapter {
     // Standard text messages, receive as is
     let textMessage = new TextMessage(user, message.msg, message._id)
     this.robot.logger.debug(`TextMessage: ${textMessage.toString()}`)
+
+    // Check if this is a motion message
+    if (textMessage.toString() == `${this.robot.name} here`) {
+      return this.driver.moveToUser(message.u.username);
+    }
+
     return this.robot.receive(textMessage)
   }
 

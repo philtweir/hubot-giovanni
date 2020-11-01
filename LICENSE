@@ -1,6 +1,7 @@
 The MIT License (MIT)
 
-Copyright (c) 2015 Rocket.Chat
+Copyright (c) 2015 Rocket.Chat (or Phil Weir for the bits that got tacked on)
+(please also note three-utils.js and parts of run-bot.js are MPL copyrighted to Mozilla)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
